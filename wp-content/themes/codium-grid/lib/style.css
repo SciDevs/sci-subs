@@ -65,12 +65,17 @@ legend{
 #wpmem_reg .div_checkbox {
   padding: 17px 0;
 }
-#wpmem_reg .dropdown,
+
 #wpmem_reg .textbox, #wpmem_login .textbox,
 #wpmem_reg .username, #wpmem_login .username,
 #wpmem_reg .password, #wpmem_login .password {
-  height: 8px;
+  height: 8px !important;
 }
+
+#wpmem_reg .dropdown{
+  height: 30px !important;
+}
+
 #wpmem_reg .div_textarea textarea,
 #wpmem_reg .textbox, #wpmem_login .textbox,
 #wpmem_reg .username, #wpmem_login .username,
