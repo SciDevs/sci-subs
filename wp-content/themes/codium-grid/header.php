@@ -5,11 +5,17 @@
 <meta name="viewport" content="width=device-width" />
 <title><?php wp_title( '|', true, 'right' ); ?></title>
 <link rel="pingback" href="<?php bloginfo('pingback_url') ?>" />
+<!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script> -->
+<script src="<?php echo get_template_directory_uri();?>/lib/jquery-1.8.1.min.js"></script>
+<script src="<?php echo get_template_directory_uri();?>/lib/jquery.popupoverlay.js"></script>
+<script type="text/javascript" src="<?php echo get_template_directory_uri();?>/lib/functions.js"></script>
+
+
 <?php wp_head() ?>
 </head>
 
 <body <?php body_class(); ?>> 
-
+<div id="my_modal_background" class="popup_background" style="background-color: black; opacity: 0.4; position: fixed; top: 0px; right: 0px; bottom: 0px; left: 0px; display: none;"></div>
 <div id="wrappermenu" class="">
 	<div id="access" class="container_15">
 		<?php wp_nav_menu(array( 'container_class' => 'menu-header', 'theme_location' => 'primary-menu',)); ?>			
