@@ -22,7 +22,7 @@
 
 #wpmem_reg{
   background-color: white;
-  width: 600px;
+  width: 500px;
   border-radius: 5px;
   padding: 25px 25px;
 }
@@ -41,7 +41,7 @@ legend{
   font-size: 12px;
   text-transform: uppercase;
 }
-#wpmem_reg label.text{
+#wpmem_reg label.text, #wpmem_reg label.select{
   padding-top: 10px;
   padding-bottom: 18px;
   font-size: 12px;
@@ -73,7 +73,7 @@ legend{
 }
 
 #wpmem_reg .dropdown{
-  height: 30px !important;
+  height: 32px !important;
 }
 
 #wpmem_reg .div_textarea textarea,
@@ -81,7 +81,7 @@ legend{
 #wpmem_reg .username, #wpmem_login .username,
 #wpmem_reg .password, #wpmem_login .password {
   display: block;
-  width:94%;
+  width:93%;
   padding: 10px;
   font: inherit;
 }
@@ -226,4 +226,13 @@ legend{
   border: 1px solid #afcde3;
   margin: 0 4px;
   padding: 15px 15px;
+}
+#planid{
+  width:200px!important;
+}
+#subs-price{
+  padding: 10px 30px;
+  font-size: 20px;
+  font-style: italic;
+  color: cornflowerblue;
 }

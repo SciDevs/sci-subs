@@ -32,33 +32,31 @@
   register_deactivation_hook(__FILE__, 'subscription_deactivate');
 
 
-  function createSubs($customer_id) {
+  function createSubs($customer_id,$planId) {
 
   	$customer = Braintree_Customer::find($customer_id);
   	$payment_method_token = $customer->creditCards[0]->token;
-  	//$planId=$_REQUEST['planId'];
-        //$price=$_GET["price"];
 
   	$result = Braintree_Subscription::create(array(
   		'paymentMethodToken' => $payment_method_token,
-  		'planId' =>'sci-subs-monthly',// $_REQUEST['planId']
+  		'planId' => "sci-subs-half-yearly",//$planId,
   		'id' => $customer_id
   		));
 
   	if ($result->success) {
-  		echo("Success! Subscription " . $result->subscription->id . " is " . $result->subscription->status);
+  		//echo("Success! Subscription " . $result->subscription->id . " is " . $result->subscription->status);
 
   	} else {
-  		echo("Validation errors:<br/>");
+  		//echo("Validation errors:<br/>");
   		foreach (($result->errors->deepAll()) as $error) {
-  			echo("- " . $error->message . "<br/>");
+  			//echo("- " . $error->message . "<br/>");
   		}
   	}
 
   }
 
 
-   function createCustomers($customer_id) {//echo "=>".$customer_id; exit;
+   function createCustomers($customer_id) {
   	$result = Braintree_Customer::create(array(
   		"id" => $customer_id,
   		"firstName" => $_REQUEST["first_name"],
@@ -68,27 +66,23 @@
   			"expirationMonth" => $_REQUEST["month"],
   			"expirationYear" => $_REQUEST["year"],
   			"cvv" => $_REQUEST["cvv"],
-  			/*"billingAddress" => array(
-  				"postalCode" => $_REQUEST["zip"]
-  				)*/
   		)
   		)); 
   
   	if ($result->success) {
-  		echo "success";   
-  		createSubs($customer_id);
-  	} else { exit;
-  		echo("Validation errors:<br/>");
+  		//echo "success";   
+  		createSubs($customer_id,$_REQUEST['planid']);
+  	} else {
+  		//echo("Validation errors:<br/>");
   		foreach (($result->errors->deepAll()) as $error) {
   			$errormsg=$error->message;
-  			echo("- " . $error->message . "<br/>");
+  			//echo("- " . $error->message . "<br/>");
   		}
   	}
  }
 add_action( 'user_register', 'myplugin_registration_save', 10, 1 );
 
 function myplugin_registration_save( $user_id ) {
-	echo "====>".$user_id;  //print_r($_REQUEST); die();
 	createCustomers($user_id);
     
 }
