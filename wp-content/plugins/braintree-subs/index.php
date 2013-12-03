@@ -32,26 +32,26 @@
   register_deactivation_hook(__FILE__, 'subscription_deactivate');
 
 
-  function createSubs($customer_id,$planId) {
+function createSubs($customer_id,$planId) {
 
-  	$customer = Braintree_Customer::find($customer_id);
-  	$payment_method_token = $customer->creditCards[0]->token;
+        $customer = Braintree_Customer::find("customer".$customer_id);
+        $payment_method_token = $customer->creditCards[0]->token;
 
-  	$result = Braintree_Subscription::create(array(
-  		'paymentMethodToken' => $payment_method_token,
-  		'planId' => "sci-subs-half-yearly",//$planId,
-  		'id' => $customer_id
-  		));
+        $result = Braintree_Subscription::create(array(
+                'paymentMethodToken' => $payment_method_token,
+                'planId' => $planId,
+                'id' => date("YmdHis")
+                ));
 
-  	if ($result->success) {
-  		//echo("Success! Subscription " . $result->subscription->id . " is " . $result->subscription->status);
+        if ($result->success) {
+        //      echo("Success! Subscription " . $result->subscription->id . " is " . $result->subscription->status);
 
-  	} else {
-  		//echo("Validation errors:<br/>");
-  		foreach (($result->errors->deepAll()) as $error) {
-  			//echo("- " . $error->message . "<br/>");
-  		}
-  	}
+        } else {
+                //echo("Validation errors:<br/>");
+                foreach (($result->errors->deepAll()) as $error) {
+                //      echo("- " . $error->message . "<br/>");
+                }
+        }
 
   }
 
