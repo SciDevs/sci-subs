@@ -31,6 +31,20 @@
 
   register_deactivation_hook(__FILE__, 'subscription_deactivate');
 
+  add_action('init', 'myStartSession', 1);
+  add_action('wp_logout', 'myEndSession');
+  add_action('wp_login', 'myEndSession');
+
+  function myStartSession() {
+    if(!session_id()) {
+      session_start();
+    }
+  }
+
+  function myEndSession() {
+    session_destroy ();
+  }
+
 
   function createSubs($customer_id,$planId) {
 
@@ -44,19 +58,20 @@
   		));
 
   	if ($result->success) {
-  		//echo("Success! Subscription " . $result->subscription->id . " is " . $result->subscription->status);
-
-  	} else {
+  		echo("Success! Subscription " . $result->subscription->id . " is " . $result->subscription->status);
+      $_SESSION['subscribed'] = 'yes';
+    } else {
+      deleteCustomer($customer_id);
   		//echo("Validation errors:<br/>");
-  		foreach (($result->errors->deepAll()) as $error) {
+      //foreach (($result->errors->deepAll()) as $error) {
   			//echo("- " . $error->message . "<br/>");
-  		}
-  	}
+      //}
+    }
 
   }
 
 
-   function createCustomers($customer_id) {
+  function createCustomers($customer_id) {
   	$result = Braintree_Customer::create(array(
   		"id" => $customer_id,
   		"firstName" => $_REQUEST["first_name"],
@@ -66,23 +81,33 @@
   			"expirationMonth" => $_REQUEST["month"],
   			"expirationYear" => $_REQUEST["year"],
   			"cvv" => $_REQUEST["cvv"],
-  		)
+        )
   		)); 
-  
+
   	if ($result->success) {
   		//echo "success";   
   		createSubs($customer_id,$_REQUEST['planid']);
   	} else {
+      deleteCustomer($customer_id);
   		//echo("Validation errors:<br/>");
-  		foreach (($result->errors->deepAll()) as $error) {
-  			$errormsg=$error->message;
+  		//foreach (($result->errors->deepAll()) as $error) {
+  			//$errormsg=$error->message;
   			//echo("- " . $error->message . "<br/>");
-  		}
+  		//}
   	}
- }
-add_action( 'user_register', 'myplugin_registration_save', 10, 1 );
+  }
 
-function myplugin_registration_save( $user_id ) {
-	createCustomers($user_id);
-    
+  function deleteCustomer($customer_id){
+    wp_delete_user($customer_id);
+  }
+
+  add_action( 'user_register', 'myplugin_registration_save', 10, 1 );
+
+  function myplugin_registration_save( $user_id ) {
+   createCustomers($user_id);
+   ?>
+   <script type="text/javascript">
+    location.href='<?php echo "http://".$_SERVER['HTTP_HOST']; ?>';
+  </script>
+  <?php
 }
